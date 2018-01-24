@@ -1,12 +1,15 @@
 package com.bvk.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -26,6 +29,9 @@ public class Product extends AbstractEntity {
 				inverseJoinColumns=@JoinColumn(name="category_id")
 			)
 	private List<Category> categories = new ArrayList<Category>();
+	
+	@OneToMany(mappedBy="id.product")
+	private Set<OrderItem> items = new HashSet<>();
 
 	public Product() {
 		
@@ -37,6 +43,15 @@ public class Product extends AbstractEntity {
 		this.preco = preco;
 	}
 
+	public List<Order> getOrders(){
+		List<Order> orders = new ArrayList<>();
+		for (OrderItem x : items) {
+			orders.add(x.getOrder());
+		}
+		
+		return orders;
+	}
+	
 	public String getNome() {
 		return nome;
 	}
@@ -59,6 +74,14 @@ public class Product extends AbstractEntity {
 
 	public void setCategories(List<Category> categories) {
 		this.categories = categories;
+	}
+
+	public Set<OrderItem> getItems() {
+		return items;
+	}
+
+	public void setItems(Set<OrderItem> items) {
+		this.items = items;
 	}
 
 }

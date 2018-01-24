@@ -1,11 +1,14 @@
 package com.bvk.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -27,6 +30,9 @@ public class Order extends AbstractEntity {
 	@ManyToOne
 	@JoinColumn(name = "shippingAddress_id")
 	private Address shippingAddress;
+	
+	@OneToMany(mappedBy="id.order")
+	private Set<OrderItem> items = new HashSet<>();
 
 	public Order() {
 		// TODO Auto-generated constructor stub
@@ -79,6 +85,14 @@ public class Order extends AbstractEntity {
 
 	public void setShippingAddress(Address shippingAddress) {
 		this.shippingAddress = shippingAddress;
+	}
+
+	public Set<OrderItem> getItems() {
+		return items;
+	}
+
+	public void setItems(Set<OrderItem> items) {
+		this.items = items;
 	}
 
 }

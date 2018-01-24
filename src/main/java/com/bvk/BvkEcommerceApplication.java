@@ -16,6 +16,7 @@ import com.bvk.model.City;
 import com.bvk.model.Customer;
 import com.bvk.model.Estate;
 import com.bvk.model.Order;
+import com.bvk.model.OrderItem;
 import com.bvk.model.Payment;
 import com.bvk.model.PaymentCard;
 import com.bvk.model.PaymentSlip;
@@ -25,6 +26,7 @@ import com.bvk.repository.CategoryRepository;
 import com.bvk.repository.CityRepository;
 import com.bvk.repository.CustomerRepository;
 import com.bvk.repository.EstateRepository;
+import com.bvk.repository.OrderItemRepository;
 import com.bvk.repository.OrderRepository;
 import com.bvk.repository.PaymentRepository;
 import com.bvk.repository.ProductRepository;
@@ -56,7 +58,9 @@ public class BvkEcommerceApplication implements CommandLineRunner {
 	@Autowired
 	private PaymentRepository paymentRepository;
 
-	
+	@Autowired
+	private OrderItemRepository orderitemRepository;
+
 	
 	public static void main(String[] args) {
 		SpringApplication.run(BvkEcommerceApplication.class, args);
@@ -122,10 +126,18 @@ public class BvkEcommerceApplication implements CommandLineRunner {
 		paymentRepository.save(Arrays.asList(pay1,pay2));
 		
 		
+		OrderItem oi1 = new OrderItem(o1, p1, 0., 1, 2000.0);
+		OrderItem oi2 = new OrderItem(o2, p3, 0., 2, 80.0);
+		OrderItem oi3 = new OrderItem(o2, p2, 100., 1, 800.0);
 		
+		o1.getItems().addAll(Arrays.asList(oi1,oi2));
+		o2.getItems().addAll(Arrays.asList(oi3));
 		
+		p1.getItems().addAll(Arrays.asList(oi1));
+		p3.getItems().addAll(Arrays.asList(oi2));
+		p2.getItems().addAll(Arrays.asList(oi3));
 		
-		
+		orderitemRepository.save(Arrays.asList(oi1,oi2,oi3));
 		
 		
 		
