@@ -32,6 +32,9 @@ public class Customer extends AbstractEntity {
 	@ElementCollection
 	@CollectionTable(name="phone")
 	private Set<String> phones = new HashSet<>();
+	
+	@OneToMany(mappedBy="customer")
+	private List<Order> orders = new ArrayList<>();
 
 	public Customer() {
 	}
@@ -92,4 +95,17 @@ public class Customer extends AbstractEntity {
 		this.phones = phones;
 	}
 
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+
+	public void setCustomerType(Integer customerType) {
+		this.customerType = customerType;
+	}
+
+	
 }

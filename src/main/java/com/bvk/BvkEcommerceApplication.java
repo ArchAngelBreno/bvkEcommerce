@@ -1,5 +1,6 @@
 package com.bvk;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,17 +9,24 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.bvk.enumerator.CustomerType;
+import com.bvk.enumerator.PaymentStatus;
 import com.bvk.model.Address;
 import com.bvk.model.Category;
 import com.bvk.model.City;
 import com.bvk.model.Customer;
 import com.bvk.model.Estate;
+import com.bvk.model.Order;
+import com.bvk.model.Payment;
+import com.bvk.model.PaymentCard;
+import com.bvk.model.PaymentSlip;
 import com.bvk.model.Product;
 import com.bvk.repository.AddressRepository;
 import com.bvk.repository.CategoryRepository;
 import com.bvk.repository.CityRepository;
 import com.bvk.repository.CustomerRepository;
 import com.bvk.repository.EstateRepository;
+import com.bvk.repository.OrderRepository;
+import com.bvk.repository.PaymentRepository;
 import com.bvk.repository.ProductRepository;
 
 @SpringBootApplication
@@ -41,6 +49,12 @@ public class BvkEcommerceApplication implements CommandLineRunner {
 
 	@Autowired
 	private AddressRepository addressRepository;
+
+	@Autowired
+	private OrderRepository orderRepository;
+
+	@Autowired
+	private PaymentRepository paymentRepository;
 
 	
 	
@@ -90,6 +104,31 @@ public class BvkEcommerceApplication implements CommandLineRunner {
 		
 		customerRepository.save(cus1);
 		addressRepository.save(Arrays.asList(a1,a2));
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+		
+		Order o1 = new Order(null, sdf.parse("30/09/2017 00:00"), cus1, a1);
+		Order o2 = new Order(null, sdf.parse("10/10/2017 00:00"), cus1, a2);
+		
+		Payment pay1 = new PaymentCard(null, PaymentStatus.QUITADO, o1, 6);
+		o1.setPayment(pay1);
+		
+		Payment pay2 = new PaymentSlip(null, PaymentStatus.PENDENTE, o2, sdf.parse("20/10/2017 00:00"), null);
+		o2.setPayment(pay2);
+		
+		cus1.getOrders().addAll(Arrays.asList(o1,o2));
+		
+		orderRepository.save(Arrays.asList(o1,o2));
+		paymentRepository.save(Arrays.asList(pay1,pay2));
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 	}
 }
