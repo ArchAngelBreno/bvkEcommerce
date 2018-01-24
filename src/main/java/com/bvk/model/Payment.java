@@ -8,6 +8,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.bvk.enumerator.PaymentStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -20,6 +21,7 @@ public abstract class Payment extends AbstractEntity {
 	@OneToOne
 	@JoinColumn(name="order_id")
 	@MapsId
+	@JsonBackReference
 	private Order order;
 	
 	

@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 import com.bvk.enumerator.CustomerType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -33,6 +34,7 @@ public class Customer extends AbstractEntity {
 	@CollectionTable(name="phone")
 	private Set<String> phones = new HashSet<>();
 	
+	@JsonBackReference
 	@OneToMany(mappedBy="customer")
 	private List<Order> orders = new ArrayList<>();
 

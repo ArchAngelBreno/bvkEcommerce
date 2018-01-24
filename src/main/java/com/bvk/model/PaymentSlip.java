@@ -5,19 +5,21 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 import com.bvk.enumerator.PaymentStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-public class PaymentSlip extends Payment{
+public class PaymentSlip extends Payment {
 
 	private static final long serialVersionUID = 1L;
-	
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date paymentDate;
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date dueDate;
 
 	public PaymentSlip() {
 	}
 
-	public PaymentSlip(Long id, PaymentStatus paymentStatus, Order order,Date dueDate,Date paymentDate) {
+	public PaymentSlip(Long id, PaymentStatus paymentStatus, Order order, Date dueDate, Date paymentDate) {
 		super(id, paymentStatus, order);
 		this.dueDate = dueDate;
 		this.paymentDate = paymentDate;
@@ -38,6 +40,5 @@ public class PaymentSlip extends Payment{
 	public void setDueDate(Date dueDate) {
 		this.dueDate = dueDate;
 	}
-	
-	
+
 }

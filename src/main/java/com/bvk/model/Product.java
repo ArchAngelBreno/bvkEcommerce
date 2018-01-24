@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Product extends AbstractEntity {
@@ -30,6 +31,7 @@ public class Product extends AbstractEntity {
 			)
 	private List<Category> categories = new ArrayList<Category>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="id.product")
 	private Set<OrderItem> items = new HashSet<>();
 
@@ -43,6 +45,7 @@ public class Product extends AbstractEntity {
 		this.preco = preco;
 	}
 
+	@JsonIgnore
 	public List<Order> getOrders(){
 		List<Order> orders = new ArrayList<>();
 		for (OrderItem x : items) {
