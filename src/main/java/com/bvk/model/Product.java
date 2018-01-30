@@ -11,7 +11,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -23,7 +22,7 @@ public class Product extends AbstractEntity {
 	private Double preco;
 	
 	//Nao busco a lista de categorias, pois ja esta sendo chamada do outro lado
-	@JsonBackReference
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name="product_category",
 				joinColumns= @JoinColumn(name="product_id"),

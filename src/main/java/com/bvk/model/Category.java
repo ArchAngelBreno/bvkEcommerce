@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Category extends AbstractEntity {
@@ -15,8 +14,6 @@ public class Category extends AbstractEntity {
 
 	private String nome;
 	
-	//Tras os objetos associados
-	@JsonManagedReference
 	@ManyToMany(mappedBy="categories")
 	private List<Product> products = new ArrayList<>();
 

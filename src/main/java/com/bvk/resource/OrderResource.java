@@ -25,7 +25,7 @@ public class OrderResource {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> listar(@PathVariable Long id) {
+	public ResponseEntity<Order> findById(@PathVariable Long id) {
 		Order order = service.findById(id);
 		return ResponseEntity.ok().body(order);
 	}

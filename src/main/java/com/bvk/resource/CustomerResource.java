@@ -23,7 +23,7 @@ public class CustomerResource {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> listar(@PathVariable Long id) {
+	public ResponseEntity<Customer> findById(@PathVariable Long id) {
 		Customer c = service.findById(id);
 		return ResponseEntity.ok().body(c);
 	}

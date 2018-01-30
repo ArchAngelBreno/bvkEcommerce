@@ -13,8 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 import com.bvk.enumerator.CustomerType;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Customer extends AbstractEntity {
@@ -26,7 +25,6 @@ public class Customer extends AbstractEntity {
 	private String cpfOrCnpj;
 	private Integer customerType;
 
-	@JsonManagedReference
 	@OneToMany(mappedBy="customer",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	private List<Address> addresses = new ArrayList<>();
 
@@ -34,7 +32,7 @@ public class Customer extends AbstractEntity {
 	@CollectionTable(name="phone")
 	private Set<String> phones = new HashSet<>();
 	
-	@JsonBackReference
+	@JsonIgnore
 	@OneToMany(mappedBy="customer")
 	private List<Order> orders = new ArrayList<>();
 
