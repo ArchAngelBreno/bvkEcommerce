@@ -70,7 +70,15 @@ public class BvkEcommerceApplication implements CommandLineRunner {
 	public void run(String... arg0) throws Exception {
 		Category cat1 = new Category(null, "Informatica");
 		Category cat2 = new Category(null, "Escritorio");
-
+		Category cat3 = new Category(null, "Cama mesa e banho");
+		Category cat4 = new Category(null, "Eletronicos");
+		Category cat5 = new Category(null, "Jardinagem");
+		Category cat6 = new Category(null, "Decoração");
+		Category cat7 = new Category(null, "Perfumaria");
+		
+		
+		
+		
 		Product p1 = new Product(null, "Computador", 2000.00);
 		Product p2 = new Product(null, "Impressora", 800.00);
 		Product p3 = new Product(null, "Mouse", 80.00);
@@ -82,7 +90,7 @@ public class BvkEcommerceApplication implements CommandLineRunner {
 		p2.getCategories().addAll(Arrays.asList(cat1, cat2));
 		p3.getCategories().addAll(Arrays.asList(cat1));
 
-		categoryRepository.save(Arrays.asList(cat1, cat2));
+		categoryRepository.save(Arrays.asList(cat1, cat2,cat3, cat4,cat5, cat6,cat7));
 		productRepository.save(Arrays.asList(p1, p2, p3));
 
 		Estate est1 = new Estate(null, "Rio de janeiro");

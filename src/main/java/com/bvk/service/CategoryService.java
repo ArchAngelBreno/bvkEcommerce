@@ -4,8 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.bvk.dto.CategoryDTO;
 import com.bvk.model.Category;
 import com.bvk.repository.CategoryRepository;
 import com.bvk.service.exception.DataIntegrityException;
@@ -47,4 +51,15 @@ public class CategoryService{
 	public List<Category> findAll() {
 		return categoryRepository.findAll();
 	}
+	
+	
+	public Page<Category> findByPage(Integer page, Integer linePerPage,String orderBy,String direction){
+		PageRequest pageRequest= new PageRequest(page, linePerPage, Direction.valueOf(direction), orderBy);
+		return categoryRepository.findAll(pageRequest);
+	}
+	
+	public Category fromDTO(CategoryDTO categoryDTO) {
+		return new Category(categoryDTO.getId(), categoryDTO.getNome());
+	}
+	
 }

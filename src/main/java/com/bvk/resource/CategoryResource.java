@@ -4,7 +4,10 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -47,8 +51,22 @@ public class CategoryResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 	
+	@GetMapping("/page")
+	public ResponseEntity<Page<CategoryDTO>> findByPage(
+			@RequestParam(value="page",defaultValue="0") Integer page, 
+			@RequestParam(value="linePerPage",defaultValue="24") Integer linePerPage,
+			@RequestParam(value="orderBy",defaultValue="nome") String orderBy,
+			@RequestParam(value="direction",defaultValue="ASC") String direction) {
+		
+		Page<Category> categories = service.findByPage(page, linePerPage, orderBy, direction);
+		Page<CategoryDTO> listDto = 
+				categories.map(obj-> new CategoryDTO(obj));
+		return ResponseEntity.ok().body(listDto);
+	}
+	
 	@PostMapping
-	public ResponseEntity<Void> insert(@RequestBody Category cat){
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoryDTO catDto){
+		Category cat = service.fromDTO(catDto);
 		cat = service.insert(cat);
 		URI uri = ServletUriComponentsBuilder
 				.fromCurrentRequest().path("/{id}")
@@ -58,7 +76,8 @@ public class CategoryResource {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> update(@RequestBody Category cat,@PathVariable Long id){
+	public ResponseEntity<Void> update(@Valid @RequestBody CategoryDTO catDTO,@PathVariable Long id){
+		Category cat = service.fromDTO(catDTO);
 		cat.setId(id);
 		cat = service.update(cat);
 		return ResponseEntity.noContent().build();
