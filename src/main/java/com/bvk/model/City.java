@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 public class City extends AbstractEntity{
@@ -11,6 +13,7 @@ public class City extends AbstractEntity{
 	private static final long serialVersionUID = 1L;
 	private String nome;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="estate_id")
 	private Estate estate;

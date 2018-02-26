@@ -32,7 +32,7 @@ public abstract class Payment extends AbstractEntity {
 
 	public Payment(Long id, PaymentStatus paymentStatus, Order order) {
 		super(id);
-		this.paymentStatus = paymentStatus.getCod();
+		this.paymentStatus = (paymentStatus == null) ? null : paymentStatus.getCod();
 		this.order = order;
 	}
 

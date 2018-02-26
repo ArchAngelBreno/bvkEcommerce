@@ -35,9 +35,14 @@ public class CategoryService{
 		return categoryRepository.save(cat);
 	}
 
-	public Category update(Category cat) {
-		findById(cat.getId());
-		return categoryRepository.save(cat);
+	public Category update(Category category) {
+		Category newCategory = findById(category.getId());
+		updateData(newCategory, category);
+		return categoryRepository.save(newCategory);
+	}
+
+	private void updateData(Category newCategory, Category category) {
+		newCategory.setNome(category.getNome());
 	}
 
 	public void delete(Long id) {

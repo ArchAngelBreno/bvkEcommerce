@@ -10,7 +10,13 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.bvk.dto.CustomerDTO;
+import com.bvk.dto.NewCustomerDTO;
+import com.bvk.enumerator.CustomerType;
+import com.bvk.model.Address;
+import com.bvk.model.City;
 import com.bvk.model.Customer;
+import com.bvk.repository.AddressRepository;
+import com.bvk.repository.CityRepository;
 import com.bvk.repository.CustomerRepository;
 import com.bvk.service.exception.DataIntegrityException;
 import com.bvk.service.exception.ObjectNotFoundException;
@@ -21,6 +27,12 @@ public class CustomerService {
 
 	@Autowired
 	private CustomerRepository customerRepository;
+
+	@Autowired
+	private CityRepository cityRepository;
+
+	@Autowired
+	private AddressRepository addressRepository;
 
 	public Customer findById(Long id) {
 		Customer cus = customerRepository.findOne(id);
@@ -59,8 +71,35 @@ public class CustomerService {
 		return customerRepository.findAll(pageRequest);
 	}
 
+	public Customer insert(Customer cus) {
+		cus.setId(null);
+		cus = customerRepository.save(cus);
+		addressRepository.save(cus.getAddresses());
+		return cus;
+	}
+
 	public Customer fromDTO(CustomerDTO customerDTO) {
 		return new Customer(customerDTO.getId(), customerDTO.getNome(), customerDTO.getEmail(), null, null);
+	}
+
+	public Customer fromDTO(NewCustomerDTO customerDTO) {
+		Customer cus = new Customer(null, customerDTO.getName(), customerDTO.getEmail(), customerDTO.getCpfOrCnpj(),
+				CustomerType.toEnum(customerDTO.getCustomerType()));
+		City city = cityRepository.findOne(customerDTO.getCityId());
+		Address address = new Address(null, customerDTO.getStreet(), customerDTO.getNumber(),
+				customerDTO.getComplement(), customerDTO.getNeighborhood(), customerDTO.getZipcode(), cus, city);
+		cus.getAddresses().add(address);
+		cus.getPhones().add(customerDTO.getPhone1());
+
+		if (customerDTO.getPhone2() != null) {
+			cus.getPhones().add(customerDTO.getPhone2());
+		}
+
+		if (customerDTO.getPhone3() != null) {
+			cus.getPhones().add(customerDTO.getPhone3());
+		}
+
+		return cus;
 	}
 
 }

@@ -1,12 +1,15 @@
 package com.bvk.dto;
 
+import java.io.Serializable;
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.bvk.model.Customer;
 
-public class CustomerDTO {
+public class CustomerDTO implements Serializable{
+	private static final long serialVersionUID = 1L;
 
 	private Long id;
 	

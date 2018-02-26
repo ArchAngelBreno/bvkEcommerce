@@ -22,7 +22,6 @@ public class Address extends AbstractEntity {
 	@JoinColumn(name="customer_id")
 	private Customer customer;
 	
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="city_id")
 	private City city;
