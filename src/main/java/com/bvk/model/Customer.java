@@ -44,7 +44,7 @@ public class Customer extends AbstractEntity {
 		this.name = name;
 		this.email = email;
 		this.cpfOrCnpj = cpfOrCnpj;
-		this.customerType = customerType.getCod();
+		this.customerType = (customerType == null) ? null : customerType.getCod();
 	}
 
 	public String getName() {

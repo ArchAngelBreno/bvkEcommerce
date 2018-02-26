@@ -14,6 +14,7 @@ import com.bvk.model.Category;
 import com.bvk.repository.CategoryRepository;
 import com.bvk.service.exception.DataIntegrityException;
 import com.bvk.service.exception.ObjectNotFoundException;
+import com.bvk.util.ConstantError;
 
 @Service
 public class CategoryService{
@@ -24,7 +25,7 @@ public class CategoryService{
 	public Category findById(Long id) {
 		Category cat = categoryRepository.findOne(id);
 		if (cat == null) {
-			throw new ObjectNotFoundException("Não foi encontrado nenhum id: "+id + ", verifique com a gerencia");
+			throw new ObjectNotFoundException(ConstantError.OBJECT_NOT_FOUND_ERROR+id);
 		}
 		return cat;
 	}
@@ -44,7 +45,7 @@ public class CategoryService{
 		try {
 			categoryRepository.delete(id);
 		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Não é possivel excluir uma categoria que possui produtos");
+			throw new DataIntegrityException(ConstantError.DELETE_CATEGORY_ERROR);
 		}
 	}
 
