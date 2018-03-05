@@ -9,8 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.bvk.domain.Category;
 import com.bvk.dto.CategoryDTO;
-import com.bvk.model.Category;
 import com.bvk.repository.CategoryRepository;
 import com.bvk.service.exception.DataIntegrityException;
 import com.bvk.service.exception.ObjectNotFoundException;

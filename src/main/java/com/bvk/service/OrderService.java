@@ -3,7 +3,7 @@ package com.bvk.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bvk.model.Order;
+import com.bvk.domain.Order;
 import com.bvk.repository.OrderRepository;
 import com.bvk.service.exception.ObjectNotFoundException;
 
@@ -21,4 +21,8 @@ public class OrderService {
 		return order;
 	}
 
+	public Order insert(Order order) {
+		return null;
+	}
+	
 }

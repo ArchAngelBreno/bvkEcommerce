@@ -5,7 +5,7 @@ import java.io.Serializable;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.bvk.model.Category;
+import com.bvk.domain.Category;
 
 public class CategoryDTO implements Serializable {
 	private static final long serialVersionUID = 1L;

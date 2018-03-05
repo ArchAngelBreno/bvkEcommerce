@@ -9,12 +9,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.bvk.domain.Address;
+import com.bvk.domain.City;
+import com.bvk.domain.Customer;
 import com.bvk.dto.CustomerDTO;
 import com.bvk.dto.NewCustomerDTO;
 import com.bvk.enumerator.CustomerType;
-import com.bvk.model.Address;
-import com.bvk.model.City;
-import com.bvk.model.Customer;
 import com.bvk.repository.AddressRepository;
 import com.bvk.repository.CityRepository;
 import com.bvk.repository.CustomerRepository;

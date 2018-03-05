@@ -1,4 +1,4 @@
-package com.bvk.model;
+package com.bvk.domain;
 
 import java.util.ArrayList;
 import java.util.HashSet;

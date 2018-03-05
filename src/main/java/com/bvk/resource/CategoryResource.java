@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.bvk.domain.Category;
 import com.bvk.dto.CategoryDTO;
-import com.bvk.model.Category;
 import com.bvk.service.CategoryService;
 
 @RestController

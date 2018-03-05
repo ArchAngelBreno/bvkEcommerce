@@ -3,7 +3,7 @@ package com.bvk.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.bvk.model.Category;
+import com.bvk.domain.Category;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {

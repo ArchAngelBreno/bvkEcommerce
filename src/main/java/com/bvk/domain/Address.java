@@ -1,4 +1,4 @@
-package com.bvk.model;
+package com.bvk.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;

@@ -1,4 +1,4 @@
-package com.bvk.model;
+package com.bvk.domain;
 
 import java.io.Serializable;
 
@@ -98,4 +98,8 @@ public class OrderItem implements Serializable {
 		return true;
 	}
 
+	
+	public Double getSubTotal() {
+		return (preco - desconto) * quantidade;
+	}
 }

@@ -1,4 +1,4 @@
-package com.bvk.model;
+package com.bvk.domain;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -15,12 +15,12 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-@Table(name="order_table")
+@Table(name = "order_table")
 public class Order extends AbstractEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@JsonFormat(pattern="dd/MM/yyyy hh:mm")
+	@JsonFormat(pattern = "dd/MM/yyyy hh:mm")
 	private Date orderDate;
 
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
@@ -33,8 +33,8 @@ public class Order extends AbstractEntity {
 	@ManyToOne
 	@JoinColumn(name = "shippingAddress_id")
 	private Address shippingAddress;
-	
-	@OneToMany(mappedBy="id.order")
+
+	@OneToMany(mappedBy = "id.order")
 	private Set<OrderItem> items = new HashSet<>();
 
 	public Order() {
@@ -48,8 +48,6 @@ public class Order extends AbstractEntity {
 		this.customer = customer;
 		this.shippingAddress = shippingAddress;
 	}
-	
-	
 
 	public Order(Long id, Date orderDate, Customer customer, Address shippingAddress) {
 		super(id);
@@ -98,4 +96,12 @@ public class Order extends AbstractEntity {
 		this.items = items;
 	}
 
+	public Double getFinalAmount() {
+		double soma = 0.0;
+		for (OrderItem orderItem : items) {
+			soma = soma + orderItem.getSubTotal();
+		}
+
+		return soma;
+	}
 }

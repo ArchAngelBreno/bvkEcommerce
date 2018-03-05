@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.bvk.domain.Customer;
 import com.bvk.dto.CustomerDTO;
 import com.bvk.dto.NewCustomerDTO;
-import com.bvk.model.Customer;
 import com.bvk.service.CustomerService;
 
 @RestController
