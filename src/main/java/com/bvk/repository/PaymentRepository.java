@@ -1,11 +1,11 @@
 package com.bvk.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.bvk.domain.Payment;
 
 @Repository
-public interface PaymentRepository extends CrudRepository<Payment, Long>{
+public interface PaymentRepository extends JpaRepository<Payment, Long>{
 
 }

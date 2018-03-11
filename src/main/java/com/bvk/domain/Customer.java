@@ -23,7 +23,7 @@ public class Customer extends AbstractEntity {
 	private String name;
 	private String email;
 	private String cpfOrCnpj;
-	private Integer customerType;
+	private Integer customerIndentifier;
 
 	@OneToMany(mappedBy="customer",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	private List<Address> addresses = new ArrayList<>();
@@ -39,12 +39,12 @@ public class Customer extends AbstractEntity {
 	public Customer() {
 	}
 
-	public Customer(Long id, String name, String email, String cpfOrCnpj, CustomerType customerType) {
+	public Customer(Long id, String name, String email, String cpfOrCnpj, CustomerType customerIndentifier) {
 		super(id);
 		this.name = name;
 		this.email = email;
 		this.cpfOrCnpj = cpfOrCnpj;
-		this.customerType = (customerType == null) ? null : customerType.getCod();
+		this.customerIndentifier = (customerIndentifier == null) ? null : customerIndentifier.getCod();
 	}
 
 	public String getName() {
@@ -71,12 +71,13 @@ public class Customer extends AbstractEntity {
 		this.cpfOrCnpj = cpfOrCnpj;
 	}
 
-	public CustomerType getCustomerType() {
-		return CustomerType.toEnum(customerType);
+
+	public CustomerType getCustomerIndentifier() {
+		return CustomerType.toEnum(customerIndentifier);
 	}
 
-	public void setCustomerType(CustomerType customerType) {
-		this.customerType = customerType.getCod();
+	public void setCustomerIndentifier(CustomerType customerIndentifier) {
+		this.customerIndentifier = customerIndentifier.getCod();
 	}
 
 	public List<Address> getAddresses() {
@@ -104,7 +105,7 @@ public class Customer extends AbstractEntity {
 	}
 
 	public void setCustomerType(Integer customerType) {
-		this.customerType = customerType;
+		this.customerIndentifier = customerType;
 	}
 
 	
