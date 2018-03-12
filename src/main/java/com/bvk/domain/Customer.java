@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -13,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 import com.bvk.enumerator.CustomerType;
+import com.bvk.enumerator.Profile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -24,7 +26,9 @@ public class Customer extends AbstractEntity {
 	private String email;
 	private String cpfOrCnpj;
 	private Integer customerIndentifier;
-
+	@JsonIgnore
+	private String password;
+	
 	@OneToMany(mappedBy="customer",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	private List<Address> addresses = new ArrayList<>();
 
@@ -32,19 +36,26 @@ public class Customer extends AbstractEntity {
 	@CollectionTable(name="phone")
 	private Set<String> phones = new HashSet<>();
 	
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(name="PROFILE")
+	private Set<Integer> profiles = new HashSet<>();
+	
 	@JsonIgnore
 	@OneToMany(mappedBy="customer")
 	private List<Order> orders = new ArrayList<>();
 
 	public Customer() {
+		addProfile(Profile.CLIENT);
 	}
 
-	public Customer(Long id, String name, String email, String cpfOrCnpj, CustomerType customerIndentifier) {
+	public Customer(Long id, String name, String email, String cpfOrCnpj, CustomerType customerIndentifier,String password) {
 		super(id);
 		this.name = name;
 		this.email = email;
 		this.cpfOrCnpj = cpfOrCnpj;
+		this.password=password;
 		this.customerIndentifier = (customerIndentifier == null) ? null : customerIndentifier.getCod();
+		addProfile(Profile.CLIENT);
 	}
 
 	public String getName() {
@@ -108,5 +119,23 @@ public class Customer extends AbstractEntity {
 		this.customerIndentifier = customerType;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public Set<Profile> getProfiles() {
+		return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
+	}
 	
+	public void addProfile(Profile profile) {
+		profiles.add(profile.getCod());
+	}
+
+	public void setProfiles(Set<Integer> profiles) {
+		this.profiles = profiles;
+	}
 }

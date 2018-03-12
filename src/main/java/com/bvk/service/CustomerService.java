@@ -7,6 +7,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bvk.domain.Address;
@@ -33,6 +34,9 @@ public class CustomerService {
 
 	@Autowired
 	private AddressRepository addressRepository;
+	
+	@Autowired
+	private BCryptPasswordEncoder encoder;
 
 	public Customer findById(Long id) {
 		Customer cus = customerRepository.findOne(id);
@@ -79,12 +83,12 @@ public class CustomerService {
 	}
 
 	public Customer fromDTO(CustomerDTO customerDTO) {
-		return new Customer(customerDTO.getId(), customerDTO.getNome(), customerDTO.getEmail(), null, null);
+		return new Customer(customerDTO.getId(), customerDTO.getNome(), customerDTO.getEmail(), null, null,null);
 	}
 
 	public Customer fromDTO(NewCustomerDTO customerDTO) {
 		Customer cus = new Customer(null, customerDTO.getName(), customerDTO.getEmail(), customerDTO.getCpfOrCnpj(),
-				CustomerType.toEnum(customerDTO.getCustomerType()));
+				CustomerType.toEnum(customerDTO.getCustomerType()),encoder.encode(customerDTO.getPassword()));
 		City city = cityRepository.findOne(customerDTO.getCityId());
 		Address address = new Address(null, customerDTO.getStreet(), customerDTO.getNumber(),
 				customerDTO.getComplement(), customerDTO.getNeighborhood(), customerDTO.getZipcode(), cus, city);

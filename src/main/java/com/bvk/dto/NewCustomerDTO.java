@@ -27,6 +27,10 @@ public class NewCustomerDTO implements Serializable {
 	private Integer customerType;
 	
 	@NotEmpty(message = "Preenchimento obrigatório")
+	@Length(min = 8, max = 32, message = "A senha deve conter entre 8 e 32 caracteres")
+	private String password;
+
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private String street;
 	
 	@NotEmpty(message = "Preenchimento obrigatório")
@@ -154,5 +158,12 @@ public class NewCustomerDTO implements Serializable {
 	public void setCityId(Long cityId) {
 		this.cityId = cityId;
 	}
+	
+	public String getPassword() {
+		return password;
+	}
 
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }

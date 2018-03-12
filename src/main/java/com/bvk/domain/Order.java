@@ -1,7 +1,10 @@
 package com.bvk.domain;
 
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -104,4 +107,27 @@ public class Order extends AbstractEntity {
 
 		return soma;
 	}
+
+	@Override
+	public String toString() {
+		final NumberFormat NF = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		final SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+		StringBuilder builder = new StringBuilder();
+		builder.append("Pedido número: ");
+		builder.append(getId());
+		builder.append(", Data do pedido: ");
+		builder.append(SDF.format(getOrderDate()));
+		builder.append(", Cliente: ");
+		builder.append(getCustomer().getName());
+		builder.append(", Situação do pagamento: ");
+		builder.append(getPayment().getPaymentStatus().getDesc());
+		builder.append("\n, Detalhes: \n");
+		for (OrderItem oi : getItems()) {
+			builder.append(oi.toString());
+		}
+		builder.append("Valor total: ");
+		builder.append(NF.format(getFinalAmount()));
+		return builder.toString();
+	}
+	
 }

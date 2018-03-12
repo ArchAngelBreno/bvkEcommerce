@@ -9,6 +9,7 @@ import com.bvk.domain.Order;
 import com.bvk.domain.OrderItem;
 import com.bvk.domain.PaymentSlip;
 import com.bvk.enumerator.PaymentStatus;
+import com.bvk.repository.CustomerRepository;
 import com.bvk.repository.OrderItemRepository;
 import com.bvk.repository.OrderRepository;
 import com.bvk.repository.PaymentRepository;
@@ -33,6 +34,13 @@ public class OrderService {
 	@Autowired
 	private OrderItemRepository orderItemRepository;
 	
+	@Autowired
+	private CustomerRepository customerRepository;
+	
+	@Autowired
+	private EmailService emailService;
+	
+	
 	public Order findById(Long id) {
 		Order order = orderRepository.findOne(id);
 		if (order == null) {
@@ -44,6 +52,7 @@ public class OrderService {
 	public Order insert(Order order) {
 		order.setId(null);
 		order.setOrderDate(new Date());
+		order.setCustomer(customerRepository.findOne(order.getCustomer().getId()));
 		order.getPayment().setPaymentStatus(PaymentStatus.PENDENTE);
 		order.getPayment().setOrder(order);
 		if (order.getPayment() instanceof PaymentSlip) {
@@ -55,10 +64,12 @@ public class OrderService {
 		paymentRepository.save(order.getPayment());
 		for (OrderItem ip : order.getItems()) {
 			ip.setDesconto(0.0);
-			ip.setPreco(productRepository.findOne(ip.getProduct().getId()).getPreco());
+			ip.setProduct(productRepository.findOne(ip.getProduct().getId()));
+			ip.setPreco(ip.getProduct().getPreco());
 			ip.setOrder(order);
 		}
 		orderItemRepository.save(order.getItems());
+		emailService.sendOrderConfirmationEmailHtml(order);
 		return order;
 	}
 	

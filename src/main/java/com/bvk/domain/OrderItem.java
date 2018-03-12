@@ -1,6 +1,8 @@
 package com.bvk.domain;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -109,5 +111,20 @@ public class OrderItem implements Serializable {
 	
 	public Double getSubTotal() {
 		return (preco - desconto) * quantidade;
+	}
+
+	@Override
+	public String toString() {
+		final NumberFormat NF = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		StringBuilder builder = new StringBuilder();
+		builder.append(getProduct().getNome());
+		builder.append(", Qtde:");
+		builder.append(getQuantidade());
+		builder.append(", Preço unitario: ");
+		builder.append(NF.format(getPreco()));
+		builder.append(",Subtotal: ");
+		builder.append(NF.format(getSubTotal()));
+		builder.append("\n");
+		return builder.toString();
 	}
 }

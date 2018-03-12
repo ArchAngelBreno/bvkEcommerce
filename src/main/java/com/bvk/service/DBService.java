@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bvk.domain.Address;
@@ -20,6 +21,7 @@ import com.bvk.domain.PaymentSlip;
 import com.bvk.domain.Product;
 import com.bvk.enumerator.CustomerType;
 import com.bvk.enumerator.PaymentStatus;
+import com.bvk.enumerator.Profile;
 import com.bvk.repository.AddressRepository;
 import com.bvk.repository.CategoryRepository;
 import com.bvk.repository.CityRepository;
@@ -59,6 +61,9 @@ public class DBService {
 
 	@Autowired
 	private OrderItemRepository orderitemRepository;
+	
+	@Autowired
+	private BCryptPasswordEncoder encoder;
 	
 	
 	public void instantiateTestDatabase() throws ParseException {
@@ -115,13 +120,20 @@ public class DBService {
 		est1.getCities().addAll(Arrays.asList(c1));
 		est1.getCities().addAll(Arrays.asList(c2, c3));
 
-		Customer cus1 = new Customer(null, "Breno", "brenojorri@gmail.com", "123456789", CustomerType.PESSOAFISICA);
+		Customer cus1 = new Customer(null, "Breno", "brenojorri@gmail.com", "23169449656", CustomerType.PESSOAFISICA,encoder.encode("123"));
 		cus1.getPhones().addAll(Arrays.asList("24810831", "976445876"));
 
+		Customer cus2 = new Customer(null, "Klara", "klaravictoria@gmail.com", "22351734548", CustomerType.PESSOAFISICA,encoder.encode("123"));
+		cus2.addProfile(Profile.ADMIN);
+		cus1.getPhones().addAll(Arrays.asList("24810832", "976444476"));
+		
+		
 		Address a1 = new Address(null, "rua a", "1", "f", "bairro a", "33241456", cus1, c1);
 		Address a2 = new Address(null, "Avenida B", "105", "Sala 80", "Centro", "38777012", cus1, c2);
+		Address a3 = new Address(null, "Avenida C", "100", null, "Centro", "28177012", cus2, c2);
 
 		cus1.getAddresses().addAll(Arrays.asList(a1, a2));
+		cus2.getAddresses().addAll(Arrays.asList(a3));
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 
@@ -151,8 +163,8 @@ public class DBService {
 		productRepository.save(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11));
 		estateRepository.save(Arrays.asList(est1, est2));
 		cityRepository.save(Arrays.asList(c1, c2, c3));
-		customerRepository.save(cus1);
-		addressRepository.save(Arrays.asList(a1, a2));
+		customerRepository.save(Arrays.asList(cus1,cus2));
+		addressRepository.save(Arrays.asList(a1, a2,a3));
 		orderRepository.save(Arrays.asList(o1, o2));
 		paymentRepository.save(Arrays.asList(pay1, pay2));
 		orderitemRepository.save(Arrays.asList(oi1, oi2, oi3));
