@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -19,10 +20,12 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.bvk.security.JWTAuthenticationFilter;
+import com.bvk.security.JWTAuthorizationFilter;
 import com.bvk.security.JWTUtil;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled=true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Autowired
@@ -42,7 +45,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	private static final String[] PUBLIC_MATCHERS_GET= {
 			"/v1/product/**",
 			"/v1/category/**",
-			"/v1/customer/**"
+	};
+	
+
+	private static final String[] PUBLIC_MATCHERS_POST= {
+			"/v1/customer/**",
+			"/v1/auth/forgotPassword/**"
 	};
 	
 	@Override
@@ -56,8 +64,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.authorizeRequests()
 		.antMatchers(PUBLIC_MATCHERS).permitAll()
 		.antMatchers(HttpMethod.GET,PUBLIC_MATCHERS_GET).permitAll()
+		.antMatchers(HttpMethod.POST,PUBLIC_MATCHERS_POST).permitAll()
 		.anyRequest().authenticated();
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 	

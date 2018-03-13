@@ -16,9 +16,12 @@ import com.bvk.domain.Customer;
 import com.bvk.dto.CustomerDTO;
 import com.bvk.dto.NewCustomerDTO;
 import com.bvk.enumerator.CustomerType;
+import com.bvk.enumerator.Profile;
 import com.bvk.repository.AddressRepository;
 import com.bvk.repository.CityRepository;
 import com.bvk.repository.CustomerRepository;
+import com.bvk.security.UserSS;
+import com.bvk.service.exception.AuthorizationException;
 import com.bvk.service.exception.DataIntegrityException;
 import com.bvk.service.exception.ObjectNotFoundException;
 import com.bvk.util.ConstantError;
@@ -39,6 +42,12 @@ public class CustomerService {
 	private BCryptPasswordEncoder encoder;
 
 	public Customer findById(Long id) {
+		UserSS user = UserService.authenticated();
+		if (user==null || !user.hasRole(Profile.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso Negado!");
+		}
+		
+		
 		Customer cus = customerRepository.findOne(id);
 		if (cus == null) {
 			throw new ObjectNotFoundException(ConstantError.OBJECT_NOT_FOUND_ERROR + id);
